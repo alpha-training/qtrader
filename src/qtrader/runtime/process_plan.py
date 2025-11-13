@@ -44,9 +44,17 @@ def build_launch_plan(cfg: dict) -> dict:
 
     plan = {}
 
-    for name, p in processes.items():
-        port = base_port + p["port_offset"]
-        cmd = [vars["qbin"], p["script"], "-p", str(port)]
+    for name, p in processes.items():           
+        
+        cmd = [vars["qbin"], "q/qi.q", "-name", name, "-loadf", "q/qtrader.q"]
+        port = p.get("port", 0)
+        port_offset = p.get("port_offset", 0)
+        
+        if port == 0 and port_offset != 0:
+            port = base_port + port_offset
+        
+        if port != 0:
+            cmd += ["-p", str(port)]
 
         if "args" in p:
             cmd += p["args"]

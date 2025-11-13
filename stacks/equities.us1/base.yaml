@@ -19,23 +19,17 @@ vars:
 
 processes:
   tp1:
-    script: "tp.q"
+    proc: "tp"
     port_offset: 10
     args: ["-t", "1000"]
-    depends_on: []
 
   rdb1:
-    script: "rdb.q"
+    proc: "rdb"
     port_offset: 11
     depends_on: [tp1]
 
   wdb1:
-    script: "wdb.q"
-    port_offset: 12
+    proc: "wdb"
+    port: 9012
     args: ["write_every", "00:30"]
-    depends_on: [tp1]
-
-  c2:
-    script: "c2.q"
-    port_offset: 20
     depends_on: [tp1]

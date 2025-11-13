@@ -37,7 +37,7 @@ data/
 *.lock
 
 # q objects, shared libs
-qi
+*qi.q
 *.so
 *.dll
 *.obj
@@ -52,6 +52,7 @@ qi
 # -------------------------
 # qtrader generated
 # -------------------------
+stacks/*/*.json
 stacks/*/runtime/
 stacks/*/output/
 stacks/*/cache/

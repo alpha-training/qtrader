@@ -1,9 +1,8 @@
-# config/loader.py
-
 import os
 import sys
 from pathlib import Path
 import yaml
+import json
 
 from .merge import deep_merge
 from .templating import render_template
@@ -51,13 +50,15 @@ def expand_vars(vars_dict: dict, stack_name: str) -> dict:
 # -------------------------
 def load_stack(stack: str, mode: str = "dev"):
     """
-    Load and merge stack configuration:
+    Load a stack configuration:
       - base.yaml
       - env.<mode>.yaml (optional)
-    Then:
-      - Apply Jinja templating (env, arch, stack_name)
-      - Deep merge configs
-      - Expand vars.* placeholders
+
+    Steps:
+      1. Apply Jinja templating (env, arch, stack_name)
+      2. Deep merge configs
+      3. Expand vars.* placeholders
+      4. Write final merged+expanded JSON for q processes
     """
     stack_dir = Path("stacks") / stack
     if not stack_dir.exists():
@@ -73,7 +74,7 @@ def load_stack(stack: str, mode: str = "dev"):
     arch = detect_arch()
     env = os.environ
 
-    # ---- Load and template base.yaml ----
+    # ---- Load + template base.yaml ----
     base_raw = base_file.read_text()
     rendered_base = render_template(
         base_raw,
@@ -83,7 +84,7 @@ def load_stack(stack: str, mode: str = "dev"):
     )
     base_cfg = yaml.safe_load(rendered_base) or {}
 
-    # ---- Load and template overlay ----
+    # ---- Load + template overlay ----
     if overlay_file.exists():
         overlay_raw = overlay_file.read_text()
         rendered_overlay = render_template(
@@ -100,9 +101,11 @@ def load_stack(stack: str, mode: str = "dev"):
     cfg = deep_merge(base_cfg, overlay_cfg)
 
     # ---- Expand vars.* ----
-    if "vars" not in cfg:
-        cfg["vars"] = {}
+    vars_cfg = cfg.get("vars", {})
+    cfg["vars"] = expand_vars(vars_cfg, stack_name)
 
-    cfg["vars"] = expand_vars(cfg["vars"], stack_name)
+    # ---- Write final JSON for q ----
+    json_out = stack_dir / f"{stack}.json"
+    json_out.write_text(json.dumps(cfg, indent=2))
 
     return cfg
