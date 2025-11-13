@@ -11,11 +11,12 @@ requires-python = ">=3.10"
 dependencies = [
   "typer>=0.12",
   "rich>=13",
+  "PyYAML>=6.0",
+  "Jinja2>=3.1",
 ]
 
 [project.scripts]
-qtrader = "cli.__main__:main"
+qtrader = "qtrader.cli.__main__:main"
 
-[tool.setuptools]
-packages = ["cli"]
-include-package-data = true
+[tool.setuptools.packages.find]
+where = ["src"]

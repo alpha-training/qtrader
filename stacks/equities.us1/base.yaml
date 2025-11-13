@@ -1,0 +1,41 @@
+version: 1.1
+description: "US equities feed and backtesting stack"
+base_port: 5000
+
+# Variables — keep static; Python will expand {vars.*} later.
+vars:
+  # From environment
+  qhome: "{{ env.QHOME }}"
+  data_root: "{{ env.DATA }}"
+
+  # Detected by Python
+  arch: "{{ arch }}"
+
+  # These must NOT use Jinja2 because vars.* doesn't exist yet.
+  qbin: "{qhome}/{arch}/q"
+  data: "{data_root}/{stack_name}"
+
+  cpu_affinity: ""
+
+processes:
+  tp1:
+    script: "tp.q"
+    port_offset: 10
+    args: ["-t", "1000"]
+    depends_on: []
+
+  rdb1:
+    script: "rdb.q"
+    port_offset: 11
+    depends_on: [tp1]
+
+  wdb1:
+    script: "wdb.q"
+    port_offset: 12
+    args: ["write_every", "00:30"]
+    depends_on: [tp1]
+
+  c2:
+    script: "c2.q"
+    port_offset: 20
+    depends_on: [tp1]
