@@ -5,7 +5,7 @@
 ## What is kdb+?
 kdb+ is a high-performance time series database and programming language, q. It is ubiquitous in financial services, used by every one of the world's top ten investment banks, and leading trading shops such as **Citadel**, **Millennium**, **Virtu**, **Squarepoint** and others. In crypto, **BitMEX** has been a major user of kdb+ over the years, as are newer players such as **X**, **Y** and **Z** (TBD).
 
-## Why should I use it?
+## Why should I use it?	
 Up until this year, kdb+ has been paid only, and expensive, putting it out of reach of independent traders. In November 2025, the owners of kdb+, [Kx Systems](https://kx.com), announced that its new community edition would **now be free for commercial use**. This means that, for the first time ever, independent quants can run kdb+ commercially without a licence fee.
 
 ## What is qtrader?

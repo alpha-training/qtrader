@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qtrader"
+version = "0.0.1"
+description = "Lightweight kdb+ trading platform built on qi"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "typer>=0.12",
+  "rich>=13",
+]
+
+[project.scripts]
+qtrader = "cli.__main__:main"
+
+[tool.setuptools]
+packages = ["cli"]
+include-package-data = true

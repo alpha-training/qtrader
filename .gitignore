@@ -1,0 +1,66 @@
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.venv/
+env/
+venv/
+
+# setuptools / pip
+*.egg-info/
+dist/
+build/
+
+# IDEs
+.idea/
+.vscode/
+
+# -------------------------
+# OS cruft
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Logs, runtime, temp
+# -------------------------
+*.log
+logs/
+nohup.out
+tmp/
+data/
+*.pid
+*.lock
+
+# q objects, shared libs
+qi
+*.so
+*.dll
+*.obj
+*.q.k
+*.q.log
+
+# binaries
+*.exe
+*.bin
+*.out
+
+# -------------------------
+# qtrader generated
+# -------------------------
+stacks/*/runtime/
+stacks/*/output/
+stacks/*/cache/
+
+# -------------------------
+# Secrets
+# -------------------------
+.env
+*.env
+secrets.json
+secrets/
+*local.json
