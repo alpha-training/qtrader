@@ -35,6 +35,9 @@ qtrader up equities.us1
 ```
 For the full guide, see [docs/quickstart.md](docs/quickstart.md).
 
+## Design principles
+We tried to abide by various [design principles](docs/design_principles.md) when building the tool. It is up to others to judge how we we adhered to them.
+
 ## Helper videos
 On AlphaKDB’s YouTube channel, **kdb+ starting grid**, you’ll find a series of short videos showing exactly what you need to do to trade with kdb+, whether with paper money or real capital. The video **“Trading with kdb+ in under 10 minutes”** is a good place to start.
 
