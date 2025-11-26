@@ -1,6 +1,6 @@
 # qtrader
 
-**qtrader** is a lightweight, free-to-use trading platform built on **kdb+**, with a built-in **Python bridge**. If you’ve ever wanted the power of a hedge-fund-grade trading stack without the seven-figure licence costs, **qtrader** is for you.
+**qtrader** is a Python car with a kdb+ engine, aimed at those who wish to earn a modest return whilst minimising risk. In trading terms, this translates into researching and trading intraday strategies with a high [Sharpe ratio](https://www.investopedia.com/terms/s/sharperatio.asp).
 
 ## What is kdb+?
 kdb+ is a high-performance time-series database paired with its own vector programming language, q. It is ubiquitous across financial markets — used by all of the world’s top investment banks and by leading quantitative trading firms such as **Citadel**, **Millennium**, **Virtu**, **Squarepoint**, and others. In the crypto space, **BitMEX** has long been a prominent user of kdb+, and newer institutional players such as **B2C2** also rely on it for real-time analytics and trading infrastructure.
