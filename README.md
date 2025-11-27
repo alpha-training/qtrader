@@ -1,15 +1,15 @@
 # qtrader
 
-**qtrader** is a Python car with a kdb+ engine, aimed at those who wish to earn a modest return whilst minimising risk. In trading terms, this translates into researching and trading intraday strategies with a high [Sharpe ratio](https://www.investopedia.com/terms/s/sharperatio.asp).
+**qtrader** is a free-to-use backtesting and trading platform built in Python and kdb+.
 
 ## What is kdb+?
 kdb+ is a high-performance time-series database paired with its own vector programming language, q. It is ubiquitous across financial markets — used by all of the world’s top investment banks and by leading quantitative trading firms such as **Citadel**, **Millennium**, **Virtu**, **Squarepoint**, and others. In the crypto space, **BitMEX** has long been a prominent user of kdb+, and newer institutional players such as **B2C2** also rely on it for real-time analytics and trading infrastructure.
 
 ## Why should I use it?
-Until this year, kdb+ was paid-only — and expensive — putting it out of reach for independent traders. In November 2025, the owners of kdb+, [KX Systems](https://kx.com), announced that its new Community Edition would **now be free for commercial use**. This means that, for the first time ever, independent quants can run kdb+ commercially without a licence fee.
+For most of its history, kdb+ was paid-only — and expensive — putting it out of reach for independent traders. However in November 2025, the owners of kdb+, [KX Systems](https://kx.com), announced that its new Community Edition would **now be free for commercial use**. This means that, for the first time ever, independent quants can run kdb+ commercially without a licence fee.
 
 ## What is qtrader?
-If kdb+ is the world's fastest Formula 1 engine, **qtrader** is the car — built from the following components:
+If kdb+ is the world's fastest Formula 1 engine, qtrader is the car built around it — assembled from the following components:
 
 1. A kdb+ package manager and suite of modules called **qi**
 2. Python wrappers and a **Python bridge** for live and historical data
@@ -36,7 +36,7 @@ qtrader up equities.us1
 For the full guide, see [docs/quickstart.md](docs/quickstart.md).
 
 ## Design principles
-We tried to abide by various [design principles](docs/design_principles.md) when building the tool. It is up to others to judge how we we adhered to them.
+We tried to abide by various [design principles](docs/design_principles.md) when building the tool. It is up to others to judge how well we adhered to them.
 
 ## Helper videos
 On AlphaKDB’s YouTube channel, **kdb+ starting grid**, you’ll find a series of short videos showing exactly what you need to do to trade with kdb+, whether with paper money or real capital. The video **“Trading with kdb+ in under 10 minutes”** is a good place to start.
