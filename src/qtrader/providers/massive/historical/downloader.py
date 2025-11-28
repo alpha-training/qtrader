@@ -1,46 +1,48 @@
 # src/qtrader/providers/massive/historical/downloader.py
+import csv
+from .rest import MassiveREST
+from ..normalize import normalize_aggs
+API_KEY = "rSQLz8C1muscWBydEkoAWpW4RH9CW_wq"
 
-from .rest import MassiveHistoricalClient
-import logging
-from typing import List, Dict
-import time
+class HistoricalDownloader:
+    def __init__(self, api_key: str):
+        self.client = MassiveREST(api_key=api_key)
 
-logger = logging.getLogger(__name__)
-
-
-class MassiveHistoricalDownloader:
-    """
-    Bulk download historical data using MassiveHistoricalClient.
-    """
-
-    def __init__(self, client: MassiveHistoricalClient, sleep_sec: float = 0.1):
-        self.client = client
-        self.sleep_sec = sleep_sec
-
-    def download_trades(self, symbols: List[str], start: str = None, end: str = None) -> Dict[str, List[Dict]]:
+    def download_ticker(
+        self,
+        ticker: str,
+        from_: str = "2023-01-01",
+        to: str = None,
+        limit: int = 50000,
+        filename: str = None
+    ):
         """
-        Download trades for multiple symbols.
+        Fetch and normalize historical bars for a single ticker, then save to CSV.
+        """
+        raw = self.client.fetch_aggs(ticker=ticker, from_=from_, to=to, limit=limit)
+        normalized = normalize_aggs(raw)
+        filename = filename or f"{ticker}_historical.csv"
+
+        with open(filename, mode="w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=["datetime", "open", "high", "low", "close", "volume"])
+            writer.writeheader()
+            writer.writerows(normalized)
+        
+        print(f"Saved {len(normalized)} rows to {filename}")
+        return normalized
+
+    def download_multiple(self, tickers, from_="2023-01-01", to=None, limit=50000):
+        """
+        Fetch multiple tickers.
         """
         results = {}
-        for sym in symbols:
-            try:
-                trades = self.client.get_trades(sym, start=start, end=end)
-                results[sym] = trades
-                time.sleep(self.sleep_sec)  # avoid rate-limits
-            except Exception as e:
-                logger.exception("Error downloading trades for %s: %s", sym, e)
+        for ticker in tickers:
+            results[ticker] = self.download_ticker(ticker, from_=from_, to=to, limit=limit)
         return results
 
-    def download_aggregates(self, symbols: List[str], interval: str = "1d", start: str = None, end: str = None) -> Dict[str, List[Dict]]:
-        """
-        Download OHLCV aggregates for multiple symbols.
-        """
-        results = {}
-        for sym in symbols:
-            try:
-                aggs = self.client.get_aggregates(sym, interval=interval, start=start, end=end)
-                results[sym] = aggs
-                time.sleep(self.sleep_sec)
-            except Exception as e:
-                logger.exception("Error downloading aggregates for %s: %s", sym, e)
-        return results
+
+# Example usage
+#if __name__ == "__main__":
+#    downloader = HistoricalDownloader(API_KEY)
+#    tickers = ["AAPL"]
+#    downloader.download_multiple(tickers, from_="2023-06-01",to="2023-06-02", limit=5)

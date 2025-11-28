@@ -1,42 +1,23 @@
 # src/qtrader/providers/massive/historical/ingest.py
 
-from ..normalize import normalize_snapshot, normalize_trade, normalize_aggregate
-import logging
+from typing import List, Dict
+from .normalize import normalize_aggs
 
-logger = logging.getLogger(__name__)
-
-
-class MassiveHistoricalIngestor:
+class HistoricalIngest:
     """
-    Push historical data into qtrader using normalization.
+    Minimal ingest class for Massive historical data.
     """
 
-    def __init__(self, storage_handler):
+    def __init__(self):
+        pass
+
+    def ingest(self, data: List[dict]) -> List[dict]:
         """
-        :param storage_handler: object that knows how to write normalized data into qtrader
+        Accepts raw Agg data (from downloader.fetch_aggs),
+        normalizes it, and returns it for further processing
+        or saving.
         """
-        self.storage = storage_handler
-
-    def ingest_snapshots(self, snapshots: dict):
-        for symbol, data in snapshots.items():
-            try:
-                norm_data = normalize_snapshot(data)
-                self.storage.write_snapshot(symbol, norm_data)
-            except Exception as e:
-                logger.exception("Error ingesting snapshot for %s: %s", symbol, e)
-
-    def ingest_trades(self, trades: dict):
-        for symbol, data in trades.items():
-            try:
-                norm_data = [normalize_trade(d) for d in data]
-                self.storage.write_trades(symbol, norm_data)
-            except Exception as e:
-                logger.exception("Error ingesting trades for %s: %s", symbol, e)
-
-    def ingest_aggregates(self, aggregates: dict):
-        for symbol, data in aggregates.items():
-            try:
-                norm_data = [normalize_aggregate(d) for d in data]
-                self.storage.write_aggregates(symbol, norm_data)
-            except Exception as e:
-                logger.exception("Error ingesting aggregates for %s: %s", symbol, e)
+        # If the data is already normalized, you can skip this step
+        # Otherwise, call normalize_aggs
+        normalized = normalize_aggs(data)
+        return normalized
