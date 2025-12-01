@@ -1,7 +1,7 @@
 # src/qtrader/providers/massive/historical/ingest.py
 
 from typing import List, Dict
-from .normalize import normalize_aggs
+from ..normalize import normalize_aggs
 
 class HistoricalIngest:
     """
