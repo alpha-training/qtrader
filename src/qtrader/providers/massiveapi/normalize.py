@@ -1,17 +1,22 @@
-from datetime import datetime
+# src/qtrader/providers/massiveapi/normalize.py
 
-def normalize_aggs(aggs):
+from datetime import datetime
+import pandas as pd
+
+def normalize_aggs(aggs, ticker=None):
     """
-    Convert Massive Agg objects to dicts with datetime and readable keys.
+    Convert Massive aggregate bars into a pandas DataFrame.
     """
-    normalized = []
+    rows = []
     for a in aggs:
-        normalized.append({
+        rows.append({
             "datetime": datetime.utcfromtimestamp(a.timestamp / 1000),
+            "ticker": ticker,
             "open": a.open,
             "high": a.high,
             "low": a.low,
             "close": a.close,
             "volume": a.volume,
         })
-    return normalized
+
+    return pd.DataFrame(rows)

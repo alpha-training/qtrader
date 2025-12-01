@@ -1,4 +1,4 @@
-# src/qtrader/providers/massive/historical/downloader.py
+# src/qtrader/providers/massiveapi/historical/downloader.py
 import csv
 from .rest import MassiveREST
 from ..normalize import normalize_aggs

@@ -1,4 +1,4 @@
-# src/qtrader/providers/massive/historical/rest.py
+# src/qtrader/providers/massiveapi/historical/rest.py
 from massive import RESTClient
 from datetime import datetime
 
