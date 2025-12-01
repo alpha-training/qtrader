@@ -39,10 +39,3 @@ class HistoricalDownloader:
         for ticker in tickers:
             results[ticker] = self.download_ticker(ticker, from_=from_, to=to, limit=limit)
         return results
-
-
-# Example usage
-#if __name__ == "__main__":
-#    downloader = HistoricalDownloader(API_KEY)
-#    tickers = ["AAPL"]
-#    downloader.download_multiple(tickers, from_="2023-06-01",to="2023-06-02", limit=5)
