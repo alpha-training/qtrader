@@ -30,3 +30,8 @@ getHistory:{[ticker;days]
     close:"F"$c[5];
     volume:"J"$c[6])
  };
+
+/
+run this 
+q src/qtrader/providers/yahoo/yahoo.q
+getHistory[`NVDA;5]
