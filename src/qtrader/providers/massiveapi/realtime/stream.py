@@ -1,43 +1,40 @@
 # src/qtrader/providers/massiveapi/realtime/stream.py
 
-from typing import Union, Iterable
-from .websocket import MassiveWebSocket
+from massive import WebSocketClient
+from massive.websocket.models import EquityAgg, Feed, Market
+from typing import List, Callable
+import pandas as pd
+from ..normalize import normalize_aggs
 
+class EquityStream:
+    def __init__(self, api_key: str, feed=Feed.Delayed, market=Market.Stocks):
+        self.client = WebSocketClient(api_key=api_key, feed=feed, market=market)
+        self.callbacks: List[Callable[[pd.DataFrame], None]] = []
+        self.buffer: List[EquityAgg] = []
 
-class MassiveStream:
-    """
-    Minimal realtime stream wrapper for Massive data.
-    """
+    def subscribe(self, *tickers):
+        """Subscribe to one or more tickers."""
+        for t in tickers:
+            self.client.subscribe(t)
 
-    def __init__(self, api_key: str):
-        self.ws = MassiveWebSocket(api_key)
+    def on_message(self, callback: Callable[[pd.DataFrame], None]):
+        """
+        Register a callback function that will receive normalized DataFrame rows.
+        """
+        self.callbacks.append(callback)
 
-    def _normalize_tickers(self, tickers: Union[str, Iterable[str]]) -> list[str]:
+    def _handle_msg(self, msgs: List[EquityAgg]):
         """
-        Always return tickers as a list.
+        Internal handler: normalize messages and call registered callbacks.
         """
-        if isinstance(tickers, str):
-            return [tickers]
-        return list(tickers)
+        self.buffer.extend(msgs)
 
-    def subscribe_trades(self, tickers: Union[str, Iterable[str]]):
-        """
-        Subscribe to trade events for one or more tickers.
-        """
-        tickers = self._normalize_tickers(tickers)
-        channels = [f"trades:{t}" for t in tickers]  # colon format here, sanitized later
-        self.ws.subscribe(channels)
+        # Convert to DataFrame and pass to callbacks
+        for m in msgs:
+            df = normalize_aggs([m], ticker=m.symbol)
+            for cb in self.callbacks:
+                cb(df)
 
-    def subscribe_quotes(self, tickers: Union[str, Iterable[str]]):
-        """
-        Subscribe to quote events for one or more tickers.
-        """
-        tickers = self._normalize_tickers(tickers)
-        channels = [f"quotes:{t}" for t in tickers]
-        self.ws.subscribe(channels)
-
-    def start(self, on_message):
-        """
-        Start the websocket feed.
-        """
-        self.ws.run(on_message)
+    def run(self):
+        """Start streaming. Blocks until Ctrl+C."""
+        self.client.run(self._handle_msg)
