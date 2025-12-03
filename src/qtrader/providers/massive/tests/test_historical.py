@@ -1,9 +1,9 @@
 # src/qtrader/providers/massive/tests/test_historical.py
 
 import pytest
-from qtrader.providers.massiveapi.historical.rest import MassiveREST
-from qtrader.providers.massiveapi.historical.ingest import HistoricalIngest
-from qtrader.providers.massiveapi.historical.downloader import HistoricalDownloader
+from qtrader.providers.massive.historical.rest import MassiveREST
+from qtrader.providers.massive.historical.ingest import HistoricalIngest
+from qtrader.providers.massive.historical.downloader import HistoricalDownloader
 
 API_KEY = "rSQLz8C1muscWBydEkoAWpW4RH9CW_wq"
 

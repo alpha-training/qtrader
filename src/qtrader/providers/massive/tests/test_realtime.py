@@ -2,7 +2,7 @@
 
 import pytest
 from unittest.mock import MagicMock
-from qtrader.providers.massiveapi.realtime.stream import MassiveStream
+from qtrader.providers.massive.realtime.stream import MassiveStream
 
 API_KEY = "fake-api-key"
 

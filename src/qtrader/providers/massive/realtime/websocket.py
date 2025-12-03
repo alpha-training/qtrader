@@ -1,6 +1,6 @@
 # src/qtrader/providers/massiveapi/realtime/websocket.py
 
-from src.qtrader.providers.massiveapi.realtime.stream import EquityStream
+from src.qtrader.providers.massive.realtime.stream import EquityStream
 import pandas as pd
 
 class WSHandler:
