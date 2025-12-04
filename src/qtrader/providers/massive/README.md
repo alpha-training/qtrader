@@ -10,7 +10,7 @@ If you just want to get the data flowing, follow these steps.
 
 ### 1. Prerequisites
 Ensure you have the following installed in your VS Code environment:
-* **kdb+ (q)** (with `embedPy` installed)
+* **kdb+/q** (with `embedPy` installed)
 * **Python 3.x**
 * The Massive Python client:
     ```bash
@@ -62,7 +62,7 @@ The letter before the dot determines the data type and duration.
 | :--- | :--- |
 | `Market.Stocks` | US Equities (Stocks & ETFs). |
 | `Market.Crypto` | Crypto pairs (e.g., BTC-USD). |
-| `Market.Forex` | Currency pairs (e.g., EUR-USD`). |
+| `Market.Forex` | Currency pairs (e.g., EUR-USD). |
 | `Market.Options` | Equity Options. |
 
 ### 3. Running the Real-Time Feed
