@@ -19,7 +19,7 @@ process:{
     close:"f"$d 5;
     result:(time;sym;open;high;low;close);
     -1 "Processed ",(string count first result)," rows";
-    show result
+    result
  };
 
 .z.ts:{
