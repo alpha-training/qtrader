@@ -12,9 +12,9 @@ SUBSCRIPTIONS = ["Q.AAPL", "T.AAPL"]
 def handle_msg(msgs: List[WebSocketMessage]):
     for m in msgs:
         if m.event_type == "Q":
-            print(f"📉 QUOTE | {m.symbol} | Bid: ${m.bid_price} x {m.bid_size}")
+            print(f"QUOTE | {m.symbol} | Bid: ${m.bid_price} x {m.bid_size}")
         elif m.event_type == "T":
-            print(f"💰 TRADE | {m.symbol} | ${m.price}")
+            print(f"TRADE | {m.symbol} | ${m.price}")
 
 if __name__ == "__main__":
     print("--- 1. INITIALIZING CLIENT ---")
