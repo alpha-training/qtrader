@@ -27,25 +27,6 @@ client = WebSocketClient(
     market=Market.Stocks
 )
 ```
-### 3. Running the Real-Time Feed
-We do not run the Python script directly. We run the **q feed handler**, which automatically loads the Python stream in the background.
-
-1. Open the **Terminal** in VS Code.
-2. Navigate to the realtime directory:
-   ```bash
-   cd src/qtrader/providers/massive/realtime
-   ```
-3. Run the q script:
-   ```bash
-   q feed.q
-   ```
-
-**What happens next?**
-* The system connects to Massive.com..
-* Every 1 second, a list of Time, Sym, Open, High, Low, Close will be printed to the console (or sent to the tickerplant).
-
-## Configuration: Tickers & Bars
-
 To change which stocks you watch or the speed of the data, open `stream.py` and find the `SUBSCRIPTIONS` list.
 
 ```python
@@ -83,6 +64,27 @@ The letter before the dot determines the data type and duration.
 | `Market.Crypto` | Crypto pairs (e.g., `X:BTC-USD`). |
 | `Market.Forex` | Currency pairs (e.g., `C:EUR-USD`). |
 | `Market.Options` | Equity Options. |
+
+### 3. Running the Real-Time Feed
+We do not run the Python script directly. We run the **q feed handler**, which automatically loads the Python stream in the background.
+
+1. Open the **Terminal** in VS Code.
+2. Navigate to the realtime directory:
+   ```bash
+   cd src/qtrader/providers/massive/realtime
+   ```
+3. Run the q script:
+   ```bash
+   q feed.q
+   ```
+
+**What happens next?**
+* The system connects to Massive.com..
+* Every 1 second, a list of Time, Sym, Open, High, Low, Close will be printed to the console (or sent to the tickerplant).
+
+## Configuration: Tickers & Bars
+
+
 
 ### What is `__init__.py`?
 You will see this file in every folder. It tells Python to treat that directory as a **package**, allowing us to import files from one folder to another. It is often empty, which is normal.
