@@ -61,8 +61,8 @@ The letter before the dot determines the data type and duration.
 | Option | Description |
 | :--- | :--- |
 | `Market.Stocks` | US Equities (Stocks & ETFs). |
-| `Market.Crypto` | Crypto pairs (e.g., `X:BTC-USD`). |
-| `Market.Forex` | Currency pairs (e.g., `C:EUR-USD`). |
+| `Market.Crypto` | Crypto pairs (e.g., BTC-USD). |
+| `Market.Forex` | Currency pairs (e.g., EUR-USD`). |
 | `Market.Options` | Equity Options. |
 
 ### 3. Running the Real-Time Feed
