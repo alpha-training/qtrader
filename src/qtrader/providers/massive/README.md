@@ -1,35 +1,28 @@
-# qtrader massive.com adaptor
+# Massive.com Adapter for qtrader
 
-* Start by looking at [https://github.com/massive-com/client-python](https://github.com/massive-com/client-python)
-* Only include the minimal amount of code we need
+This repository handles the connection between the **Massive.com** market data API and our **kdb+** system. It handles both real-time streaming data and historical data downloads.
 
-## Directory structure
+---
 
+## Quick Start (How to Run)
 
-	(under src/qtrader/providers/massive)
-	
-    __init__.py
+If you just want to get the data flowing, follow these steps.
 
-    # Real-time ingestion
-    realtime/
-        __init__.py
-        websocket.py    ← realtime ticks/quotes/bars
-        stream.py       ← API wrappers, reconnect logic
+### 1. Prerequisites
+Ensure you have the following installed in your VS Code environment:
+* **kdb+ (q)** (with `embedPy` installed)
+* **Python 3.x**
+* The Massive Python client:
+    ```bash
+    pip install massive-client
+    ```
 
-    # Historical ingestion
-    historical/
-        __init__.py
-        rest.py         ← REST API wrapper
-        downloader.py   ← bulk downloads / batch jobs
-        ingest.py       ← push historical data into q
-
-    # Shared logic
-    normalize.py        ← converts provider JSON → q-friendly schema
-    utils.py            ← retry logic, rate-limit, helpers
-
-    # Tests
-    tests/
-        test_realtime.py
-        test_historical.py
-
-    README.md
+### 2. Configuration
+Before running, ensure your API Key is set.
+Open `src/qtrader/providers/massive/realtime/stream.py` and check the client setup:
+```python
+client = WebSocketClient(
+    api_key="YOUR_API_KEY_HERE",  # Ensure this is correct
+    feed=Feed.Delayed,
+    market=Market.Stocks
+)
