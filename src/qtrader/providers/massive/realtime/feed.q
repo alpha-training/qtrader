@@ -1,7 +1,7 @@
 \l p.q
 
 / Setup Path
-path:"/realtime"
+path:"/src/qtrader/providers/massive/realtime"
 .p.import[`sys;`:path;:;`$path];
 .p.e"import stream";
 
@@ -19,7 +19,7 @@ process:{
     close:"f"$d 5;
     result:(time;sym;open;high;low;close);
     -1 "Processed ",(string count first result)," rows";
-    result
+    show result
  };
 
 .z.ts:{
