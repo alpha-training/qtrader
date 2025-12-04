@@ -42,7 +42,7 @@ We do not run the Python script directly. We run the **q Feedhandler**, which au
 
 **What happens next?**
 * The system connects to Massive.com..
-* Every 1 second, a list of quotes (Time, Sym, Open, High, Low, Close) will be printed to the console (or sent to the tickerplant).
+* Every 1 second, a list of Time, Sym, Open, High, Low, Close will be printed to the console (or sent to the tickerplant).
 
 ## Configuration: Tickers & Bars
 
