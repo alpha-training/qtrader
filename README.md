@@ -22,6 +22,36 @@ If kdb+ is the world's fastest Formula 1 engine, qtrader is the car built around
 
 **qtrader** is owned and maintained by kdb+ engineering firm [AlphaKDB](https://alphakdb.com). Its modular architecture means that different configurations of *“car”* are not only permitted, but positively encouraged.
 
+## Processes
+A snapshot of the processes contained in **qtrader** may be found by copying and pasting the below into the [process editor](https://mermaid.live/edit):
+
+```
+flowchart TB
+    providers("providers") --> tp1["tp1"]
+    tp1 --> ctp("ctp") & eng["engines 1-n"]
+    ctp --> rdb["rdb"] & lvc("lvc1") & wdb["wdb"]
+    tp1 -.-> tp1log["log1"]
+    eng --> net("net") & tp2["tp2"]
+    net --> om("om") & tp2
+    om --> broker["broker"] & tp2
+    wdb -- 15m --> disk["Disk"]
+    disk -. Mapped .-> hdb("hdb")
+    tp2 --> ctp
+    tp2 -.-> tp2log["log2"]
+    hdb <--> gw["gw"]
+    rdb <--> gw
+    api("api")
+    c2("c2")
+    ui("ui")
+
+    eng@{ shape: processes}
+    providers@{ shape: processes}
+    broker@{ shape: processes}
+    tp1log@{ shape: lin-cyl}
+    tp2log@{ shape: lin-cyl}
+    disk@{ shape: lin-cyl}
+```
+
 ## Python users
 Python users can analyse historical and live data, subscribe to event streams, and export backtest results — while strategy logic and order routing run in kdb+ for speed and safety.
 
