@@ -1,40 +1,45 @@
-# src/qtrader/providers/massiveapi/realtime/stream.py
-
 from massive import WebSocketClient
-from massive.websocket.models import EquityAgg, Feed, Market
-from typing import List, Callable
-import pandas as pd
-from ..normalize import normalize_aggs
+from massive.websocket.models import WebSocketMessage, Feed, Market
+from typing import List
+from collections import deque
+import threading
 
-class EquityStream:
-    def __init__(self, api_key: str, feed=Feed.Delayed, market=Market.Stocks):
-        self.client = WebSocketClient(api_key=api_key, feed=feed, market=market)
-        self.callbacks: List[Callable[[pd.DataFrame], None]] = []
-        self.buffer: List[EquityAgg] = []
+data_buffer = deque()
 
-    def subscribe(self, *tickers):
-        """Subscribe to one or more tickers."""
-        for t in tickers:
-            self.client.subscribe(t)
+def drain_buffer():
+    res = list(data_buffer)
+    data_buffer.clear()
+    return res
 
-    def on_message(self, callback: Callable[[pd.DataFrame], None]):
-        """
-        Register a callback function that will receive normalized DataFrame rows.
-        """
-        self.callbacks.append(callback)
+client = WebSocketClient(
+    api_key="rSQLz8C1muscWBydEkoAWpW4RH9CW_wq",
+    feed=Feed.Delayed,
+    market=Market.Stocks
+)
+client.subscribe("A.*")
 
-    def _handle_msg(self, msgs: List[EquityAgg]):
-        """
-        Internal handler: normalize messages and call registered callbacks.
-        """
-        self.buffer.extend(msgs)
+def handle_msg(msgs: List[WebSocketMessage]):
+    for m in msgs:
+        try:
+            # Explicit Tuple Creation (Time, Sym, Open, High, Low, Close)
+            row = (
+                m.start_timestamp,
+                m.symbol,
+                m.open,
+                m.high,
+                m.low,
+                m.close
+            )
+            data_buffer.append(row)
+        except AttributeError:
+            pass
 
-        # Convert to DataFrame and pass to callbacks
-        for m in msgs:
-            df = normalize_aggs([m], ticker=m.symbol)
-            for cb in self.callbacks:
-                cb(df)
+def run_massive_feed():
+    try:
+        client.run(handle_msg)
+    except Exception as e:
+        print(f"Feed Error: {e}")
 
-    def run(self):
-        """Start streaming. Blocks until Ctrl+C."""
-        self.client.run(self._handle_msg)
+t = threading.Thread(target=run_massive_feed)
+t.daemon = True
+t.start()
