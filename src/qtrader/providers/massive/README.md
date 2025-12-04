@@ -22,7 +22,7 @@ Before running, ensure your API Key is set.
 Open `src/qtrader/providers/massive/realtime/stream.py` and check the client setup:
 ```python
 client = WebSocketClient(
-    api_key="rSQLz8C1muscWBydEkoAWpW4RH9CW_wq",
+    api_key="Your_API_Key",
     feed=Feed.Delayed,
     market=Market.Stocks
 )
