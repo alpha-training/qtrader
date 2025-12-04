@@ -4,7 +4,7 @@ This repository handles the connection between the **Massive.com** market data A
 
 ---
 
-## Quick Start (How to Run)
+## How to Run
 
 If you just want to get the data flowing, follow these steps.
 
@@ -30,51 +30,19 @@ client = WebSocketClient(
 ### 3. Running the Real-Time Feed
 We do not run the Python script directly. We run the **Q Feedhandler**, which automatically loads the Python stream in the background.
 
-1. Open the **Terminal** in VS Code (`Ctrl + \``).
+1. Open the **Terminal** in VS Code.
 2. Navigate to the realtime directory:
    ```bash
    cd src/qtrader/providers/massive/realtime
    ```
-3. Run the Q script:
+3. Run the q script:
    ```bash
    q feed.q
    ```
 
 **What happens next?**
-* The system connects to Massive.com.
-* You will see "Feedhandler Running..." in the console.
+* The system connects to Massive.com..
 * Every 1 second, a list of quotes (Time, Sym, Open, High, Low, Close) will be printed to the console (or sent to the tickerplant).
-
----
-
-## 📂 Directory Structure
-
-Here is where everything lives. The most important files for the real-time feed are in the `realtime/` folder.
-
-```text
-src/qtrader/providers/massive/
-│
-├── __init__.py               <-- Makes this folder a Python package
-│
-├── realtime/                 <-- CURRENT FOCUS
-│   ├── __init__.py
-│   ├── feed.q                <-- The ENTRY POINT. Run this file.
-│   ├── stream.py             <-- Python logic (API connection & Buffer)
-│   └── websocket.py          <-- Lower level websocket logic (optional)
-│
-├── historical/               <-- For backfilling data
-│   ├── __init__.py
-│   ├── rest.py               <-- REST API wrapper
-│   ├── downloader.py         <-- Bulk downloads / batch jobs
-│   └── ingest.py             <-- Pushes historical data into q
-│
-├── normalize.py              <-- Converts provider JSON → q-friendly schema
-├── utils.py                  <-- Retry logic, rate-limit, helpers
-│
-└── tests/
-    ├── test_realtime.py
-    └── test_historical.py
-```
 
 ### What is `__init__.py`?
 You will see this file in every folder. It tells Python to treat that directory as a **package**, allowing us to import files from one folder to another. It is often empty, which is normal.
@@ -84,19 +52,34 @@ You will see this file in every folder. It tells Python to treat that directory 
 ## Developer Notes
 
 ### How it works (The Architecture)
-We use **embedPy** to bridge Python and Q.
+We use **embedPy** to bridge Python and q.
 1. **Python (`stream.py`)**: Connects to the websocket in a background thread and collects data into a buffer.
-2. **Q (`feed.q`)**: Runs a timer every 1 second. It tells Python to "drain" that buffer, then flips the data into kdb+ lists and processes it.
+2. **q (`feed.q`)**: Runs a timer every 1 second. It tells Python to "drain" that buffer, then flips the data into kdb+ lists and processes it.
 
-### Adding new subscriptions
-To subscribe to more tickers, edit `stream.py`:
+## Configuration: Tickers & Bars
+
+To change which stocks you watch or the speed of the data, open `stream.py` and find the `SUBSCRIPTIONS` list.
+
 ```python
-# Subscribe to all stocks
-client.subscribe("A.*")
+# stream.py example
 
-# OR Subscribe to specific tickers
-# client.subscribe("A.AAPL", "A.MSFT")
+# Format is: "Prefix.Symbol"
+SUBSCRIPTIONS = ["A.AAPL", "AM.MSFT", "T.*"]
 ```
 
+### How to specify Bar Duration (Prefixes)
+The letter before the dot determines the data type and duration.
+
+| Prefix | Description | Example |
+| :--- | :--- | :--- |
+| **A** | **Second Bars** (Aggregates per second) | `"A.AAPL"` |
+| **AM** | **Minute Bars** (Aggregates per minute) | `"AM.AAPL"` |
+| **T** | **Trades** (Every single tick) | `"T.AAPL"` |
+| **Q** | **Quotes** (Top of book bid/ask) | `"Q.AAPL"` |
+
+### Examples
+* **All stocks, 1-second bars:** `["A.*"]`
+* **Apple and Microsoft, 1-minute bars:** `["AM.AAPL", "AM.MSFT"]`
+* **Trades only (no bars) for Tesla:** `["T.TSLA"]`
 ### Reference Documentation
 * **Official Massive Python Docs:** [https://github.com/massive-com/client-python](https://github.com/massive-com/client-python)
