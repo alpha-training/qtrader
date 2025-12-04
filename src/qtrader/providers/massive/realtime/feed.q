@@ -28,3 +28,17 @@ process:{
  };
 
 \t 1000
+
+/
+
+Few things - Kieran Feedback
+- why is there a ` after flip x ?
+- all instances of d[i]; should be d i;
+- the result, can you not do that on one line?
+- you have hard coded a path with your username
+- we should not use show outside of debugging
+- don't need : on last line
+- add a newline above .z.ts for readability
+- could you condense .z.ts into one line? e.g. if[count:getBatch`;...];
+- unixEpoch:1970.01.01D    / will save you typing
+
