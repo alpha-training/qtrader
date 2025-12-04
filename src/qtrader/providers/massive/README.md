@@ -22,13 +22,13 @@ Before running, ensure your API Key is set.
 Open `src/qtrader/providers/massive/realtime/stream.py` and check the client setup:
 ```python
 client = WebSocketClient(
-    api_key="YOUR_API_KEY_HERE",  # Ensure this is correct
+    api_key="rSQLz8C1muscWBydEkoAWpW4RH9CW_wq",
     feed=Feed.Delayed,
     market=Market.Stocks
 )
 ```
 ### 3. Running the Real-Time Feed
-We do not run the Python script directly. We run the **Q Feedhandler**, which automatically loads the Python stream in the background.
+We do not run the Python script directly. We run the **q Feedhandler**, which automatically loads the Python stream in the background.
 
 1. Open the **Terminal** in VS Code.
 2. Navigate to the realtime directory:
@@ -43,18 +43,6 @@ We do not run the Python script directly. We run the **Q Feedhandler**, which au
 **What happens next?**
 * The system connects to Massive.com..
 * Every 1 second, a list of quotes (Time, Sym, Open, High, Low, Close) will be printed to the console (or sent to the tickerplant).
-
-### What is `__init__.py`?
-You will see this file in every folder. It tells Python to treat that directory as a **package**, allowing us to import files from one folder to another. It is often empty, which is normal.
-
----
-
-## Developer Notes
-
-### How it works (The Architecture)
-We use **embedPy** to bridge Python and q.
-1. **Python (`stream.py`)**: Connects to the websocket in a background thread and collects data into a buffer.
-2. **q (`feed.q`)**: Runs a timer every 1 second. It tells Python to "drain" that buffer, then flips the data into kdb+ lists and processes it.
 
 ## Configuration: Tickers & Bars
 
@@ -81,5 +69,20 @@ The letter before the dot determines the data type and duration.
 * **All stocks, 1-second bars:** `["A.*"]`
 * **Apple and Microsoft, 1-minute bars:** `["AM.AAPL", "AM.MSFT"]`
 * **Trades only (no bars) for Tesla:** `["T.TSLA"]`
+
+### What is `__init__.py`?
+You will see this file in every folder. It tells Python to treat that directory as a **package**, allowing us to import files from one folder to another. It is often empty, which is normal.
+
+---
+
+## Developer Notes
+
+### How it works (The Architecture)
+We use **embedPy** to bridge Python and q.
+1. **Python (`stream.py`)**: Connects to the websocket in a background thread and collects data into a buffer.
+2. **q (`feed.q`)**: Runs a timer every 1 second. It tells Python to "drain" that buffer, then flips the data into kdb+ lists and processes it.
+
+
 ### Reference Documentation
 * **Official Massive Python Docs:** [https://github.com/massive-com/client-python](https://github.com/massive-com/client-python)
+* **embedPy:** [https://code.kx.com/platform/embedpy/](https://code.kx.com/platform/embedpy/)
