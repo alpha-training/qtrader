@@ -18,14 +18,14 @@ process:{
     high:"f"$d[3];
     low:"f"$d[4];
     close:"f"$d[5];
-    result: (time; sym; open; high; low; close);
+    result:(time;sym;open;high;low;close);
     -1 "Processed ",(string count first result)," rows";
     show result;
     :result
  };
 .z.ts:{
-    batch: getBatch[];
-    if[count batch; process[batch]];
+    batch:getBatch[];
+    if[count batch;process batch];
  };
 
 \t 1000
