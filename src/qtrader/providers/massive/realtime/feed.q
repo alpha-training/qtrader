@@ -5,7 +5,6 @@ path:"/home/ehutton/qtrader/src/qtrader/providers/massive/realtime"
 .p.import[`sys;`:path;:;`$path];
 .p.e"import stream";
 
-
 getBatch:{.p.eval"stream.drain_buffer()"};
 
 unixEpoch:1970.01.01D00:00:00.000000000;
