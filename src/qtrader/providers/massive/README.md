@@ -14,7 +14,7 @@ Ensure you have the following installed in your VS Code environment:
 * **Python 3.x**
 * The Massive Python client:
     ```bash
-    pip install massive-client
+    pip install massive
     ```
 
 ### 2. Configuration
@@ -82,14 +82,7 @@ We do not run the Python script directly. We run the **q feed handler**, which a
 * The system connects to Massive.com..
 * Every 1 second, a list of Time, Sym, Open, High, Low, Close will be printed to the console (or sent to the tickerplant).
 
-## Configuration: Tickers & Bars
-
-
-
-### What is `__init__.py`?
-You will see this file in every folder. It tells Python to treat that directory as a **package**, allowing us to import files from one folder to another. It is often empty, which is normal.
-
----
+## Configuration: Tickers & Bar
 
 ## Developer Notes
 
