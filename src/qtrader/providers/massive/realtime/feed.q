@@ -1,5 +1,5 @@
 \l p.q
-h:hopen 5010;
+/h:hopen 5010;
 
 / Setup Path
 path:"/src/qtrader/providers/massive/realtime"
@@ -22,7 +22,7 @@ process:{
     close:"f"$d 6;
     vol:"j"$d 7;
     result:(time;sym;open;high;low;close;vol);
-    neg[h](`.u.upd;tableName;result);
+    /neg[h](`.u.upd;tableName;result);
     -1 "Processed ",(string count first result)," rows";
  };
 
