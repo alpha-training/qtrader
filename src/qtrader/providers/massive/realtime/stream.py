@@ -21,14 +21,16 @@ client.subscribe("A.*")
 def handle_msg(msgs: List[WebSocketMessage]):
     for m in msgs:
         try:
-            # Explicit Tuple Creation (Time, Sym, Open, High, Low, Close)
+            # Explicit Tuple Creation (tablename, Time, Sym, Open, High, Low, Close, Volume)
             row = (
+                m.event_type,
                 m.start_timestamp,
                 m.symbol,
-                m.open,
                 m.high,
                 m.low,
-                m.close
+                m.open,
+                m.close,
+                m.volume
             )
             data_buffer.append(row)
         except AttributeError:
